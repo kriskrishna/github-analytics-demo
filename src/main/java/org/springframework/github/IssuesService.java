@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 class IssuesService {
 	private final IssuesRepository repository;
-	//TODO: Add metrics
+	//TODO: Add metrics via GaugeService
 
 	IssuesService(IssuesRepository repository) {
 		this.repository = repository;
@@ -27,7 +27,7 @@ class IssuesService {
 	}
 
 	private void submitCountMetric(long numbers) {
-		//TODO: Add metrics
+		//TODO: Add 'issues.count' metric
 	}
 
 	List<IssueDto> allIssues() {

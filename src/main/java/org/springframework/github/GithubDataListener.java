@@ -20,11 +20,13 @@ import java.lang.invoke.MethodHandles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//TODO: Write a listener
+//TODO: Write a listener component
 class GithubDataListener {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+	//TODO: Stream Listener to Sink.INPUT
+	//TODO: Store via IssuesService
 }
 
 
