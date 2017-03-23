@@ -9,8 +9,34 @@ import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRun
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.BDDAssertions.then;
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = AnalyticsApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@AutoConfigureStubRunner(ids = {"com.example.github:github-webhook"},
+		repositoryRoot = "${REPO_WITH_JARS:https://repo.spring.io/milestone/}")
+@ActiveProfiles("test")
+public class AnalyticsApplicationTests {
+
+	@Autowired StubTrigger stubTrigger;
+	@Autowired IssuesRepository repo;
+
+	@Test
+	public void should_store_a_new_issue() {
+		// TODO: Check initial repo size
+
+		// TODO: Trigger message 'issue_created_v2'
+
+		// TODO: Ensure size of repo is greater
+	}
+
+}
+
+
+
+
+
+
+
+/*
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = AnalyticsApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -32,3 +58,6 @@ public class AnalyticsApplicationTests {
 	}
 
 }
+
+
+ */
