@@ -1,10 +1,14 @@
 spring:
   application.name: github-analytics
 
-  cloud.stream.bindings.input.destination: messages
+  cloud.stream.bindings.input:
+    destination: messages
+    group: github-analytics
 
   jpa:
     database: MYSQL
+  h2.console.enabled: true
+  h2.console.path: /h2-console
 
 server.port: ${PORT:8081}
 endpoints.sensitive: false

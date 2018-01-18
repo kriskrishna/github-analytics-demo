@@ -53,5 +53,13 @@ class IssuesService {
 		submitCountMetric();
 	}
 
+	public Issues getOne(Long id) throws Exception{
+		Issues retval = repository.findOne(id);
+		if (retval == null) {
+			throw new Exception();
+		}
+		return retval;
+	}
+
 }
 
