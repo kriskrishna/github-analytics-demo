@@ -9,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Collection;
+
 import static com.toomuchcoding.jsonassert.JsonAssertion.assertThatJson;
 
 /**
@@ -17,6 +19,10 @@ import static com.toomuchcoding.jsonassert.JsonAssertion.assertThatJson;
 @SpringBootTest(classes = AnalyticsApplication.class)
 @RunWith(SpringRunner.class)
 @AutoConfigureStubRunner(ids = {"com.example.github:github-webhook:+:stubs:8082"}, workOffline = true)
+/*@AutoConfigureStubRunner(ids = {"com.example.github:github-webhook"},
+		repositoryRoot = "${REPO_WITH_JARS:https://repo.spring.io/milestone/}")*/
+/**@AutoConfigureStubRunner(ids = {"com.example.github:github-webhook"},
+repositoryRoot = "${REPO_WITH_JARS:https://localhost:8081/artifactory/libs-release-local/}")**/
 public class PojoClientStubTest {
 
     @Autowired
@@ -30,6 +36,12 @@ public class PojoClientStubTest {
         //assertThatJson(pojos).array().hasSize(1).isEqualTo(true);
 
         assertThatJson(pojos).array("['data']").contains("['username']").isEqualTo("smithapitla");
+    }
+
+    @Test
+    public void pojosShouldReturnPojosList() {
+        Collection<Pojo> pojos = client.getPojoCollection();
+        BDDAssertions.then(pojos.size()).isEqualTo(2);
     }
 
     @Test

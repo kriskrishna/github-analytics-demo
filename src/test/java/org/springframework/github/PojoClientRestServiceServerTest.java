@@ -2,6 +2,7 @@ package org.springframework.github;
 
 import org.assertj.core.api.BDDAssertions;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 /**
  * @author <a href="mailto:josh@joshlong.com">Josh Long</a>
  */
+@Ignore
 @SpringBootTest(classes = AnalyticsApplication.class)
 @RunWith(SpringRunner.class)
 public class PojoClientRestServiceServerTest {

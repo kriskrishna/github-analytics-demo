@@ -2,6 +2,7 @@ package org.springframework.github;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import org.assertj.core.api.BDDAssertions;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ import java.util.stream.Stream;
 @SpringBootTest(classes = AnalyticsApplication.class)
 @RunWith(SpringRunner.class)
 @AutoConfigureWireMock(port = 8080)
+@Ignore
 public class PojoClientTest {
 
     private Resource customers = new ClassPathResource("customers.json");

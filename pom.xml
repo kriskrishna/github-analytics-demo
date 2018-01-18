@@ -32,6 +32,13 @@
 		<distribution.management.release.url>http://localhost:8081/artifactory/libs-release-local</distribution.management.release.url>
 		<!-- [PIPELINE] -->
 		<repo.with.jars>http://localhost:8081/artifactory/libs-release-local</repo.with.jars>
+
+		<asciidoctorj.version>1.5.6</asciidoctorj.version>
+		<asciidoctor.maven.plugin.version>1.5.6</asciidoctor.maven.plugin.version>
+		<asciidoctorj.pdf.version>1.5.0-alpha.16</asciidoctorj.pdf.version>
+		<maven.jacoco.plugin.version>0.7.9</maven.jacoco.plugin.version>
+		<snippetsDirectory>${project.build.directory}/snippets</snippetsDirectory>
+		<jruby.version>1.7.26</jruby.version>
 	</properties>
 
 	<dependencies>
@@ -112,8 +119,18 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.jayway.restassured</groupId>
+			<artifactId>spring-mock-mvc</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-contract-verifier</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.restdocs</groupId>
+			<artifactId>spring-restdocs-mockmvc</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -172,6 +189,110 @@
 							<baseClassForTests>org.springframework.github.BaseClass</baseClassForTests>
 							<basePackageForTests>org.springframework.github.contracttests</basePackageForTests>
 						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>${maven.jacoco.plugin.version}</version>
+						<executions>
+							<execution>
+								<id>prepare-agent</id>
+								<goals>
+									<goal>prepare-agent</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>default-report</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>report</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctor-maven-plugin</artifactId>
+						<version>${asciidoctor.maven.plugin.version}</version>
+						<dependencies>
+							<dependency>
+								<groupId>org.asciidoctor</groupId>
+								<artifactId>asciidoctorj-pdf</artifactId>
+								<version>${asciidoctorj.pdf.version}</version>
+							</dependency>
+							<!-- Comment this section to use the default jruby artifact provided by the plugin -->
+							<dependency>
+								<groupId>org.jruby</groupId>
+								<artifactId>jruby-complete</artifactId>
+								<version>${jruby.version}</version>
+							</dependency>
+							<!-- Comment this section to use the default AsciidoctorJ artifact provided by the plugin -->
+							<dependency>
+								<groupId>org.asciidoctor</groupId>
+								<artifactId>asciidoctorj</artifactId>
+								<version>${asciidoctorj.version}</version>
+							</dependency>
+						</dependencies>
+						<configuration>
+							<!-- Attributes common to all output formats -->
+							<attributes>
+								<endpoint-url>http://example.org</endpoint-url>
+								<sourcedir>${project.build.sourceDirectory}</sourcedir>
+								<project-version>${project.version}</project-version>
+							</attributes>
+						</configuration>
+						<!-- Multiple execution blocks allow to configure different input documents, output formats
+                        or other configuration options -->
+						<executions>
+							<execution>
+								<id>asciidoc-usermanual-to-pdf</id>
+								<phase>package</phase>
+								<goals>
+									<goal>process-asciidoc</goal>
+								</goals>
+								<configuration>
+									<sourceDirectory>src/docs/asciidoc</sourceDirectory>
+									<outputDirectory>target/generated-docs</outputDirectory>
+									<doctype>book</doctype>
+									<backend>pdf</backend>
+									<!-- Since 1.5.0-alpha.9, PDF back-end can also use 'rouge' which provides more coverage
+                                    for other languages like scala -->
+									<sourceHighlighter>coderay</sourceHighlighter>
+									<attributes>
+										<pagenums/>
+										<toc/>
+										<idprefix/>
+										<idseparator>-</idseparator>
+										<snippets>${snippetsDirectory}</snippets>
+									</attributes>
+								</configuration>
+							</execution>
+							<execution>
+								<id>asciidoc-techdocs-to-html</id>
+								<phase>package</phase>
+								<goals>
+									<goal>process-asciidoc</goal>
+								</goals>
+								<configuration>
+									<sourceDirectory>src/docs/asciidoc</sourceDirectory>
+									<outputDirectory>target/generated-docs</outputDirectory>
+									<doctype>book</doctype>
+									<backend>html5</backend>
+									<sourceHighlighter>coderay</sourceHighlighter>
+									<attributes>
+										<imagesdir>./images</imagesdir>
+										<toc>left</toc>
+										<icons>font</icons>
+										<sectanchors>true</sectanchors>
+										<!-- set the idprefix to blank -->
+										<idprefix/>
+										<idseparator>-</idseparator>
+										<docinfo1>true</docinfo1>
+										<snippets>${snippetsDirectory}</snippets>
+									</attributes>
+								</configuration>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>

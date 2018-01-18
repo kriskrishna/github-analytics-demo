@@ -25,7 +25,7 @@ public class PojoClient {
                 new ParameterizedTypeReference<Collection<Pojo>>() {
                 };
 
-        return restTemplate.exchange(this.uri + "/", HttpMethod.GET, null, ptr)
+        return restTemplate.exchange(this.uri + "/all", HttpMethod.GET, null, ptr)
                 .getBody();
     }
 
